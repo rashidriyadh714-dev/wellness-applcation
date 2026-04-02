@@ -468,41 +468,104 @@ This satisfies the assignment requirement for collections and file I/O persisten
 
 ```mermaid
 classDiagram
-direction LR
+    %% Interfaces & Abstract Classes
+    class ScoreContributor {
+        <<interface>>
+        +calculateImpactScore() double
+    }
 
-class Main
-class MainFrame
-class LoginDialog
+    class AbstractRecord {
+        <<abstract>>
+        -String recordId
+        -LocalDate date
+        -String notes
+        +getRecordType()* String
+        +toDataString()* String
+    }
 
-class WellnessManager
-class DataStore
-class AnalyticsEngine
-class GoalTracker
-class HabitTracker
-class WellnessBot
+    %% Models
+    class ActivityRecord {
+        -int steps
+        -int activeMinutes
+        -double caloriesBurned
+        -int screenTimeMinutes
+        +calculateImpactScore() double
+    }
 
-class WellnessProfile
-class ScoreContributor
-class AbstractRecord
-class HealthRecord
-class ActivityRecord
+    class HealthRecord {
+        -double sleepHours
+        -int waterIntakeMl
+        -int moodScore
+        -int stressScore
+        -int restingHeartRate
+        +calculateImpactScore() double
+    }
 
-Main --> LoginDialog : authenticate
-Main --> MainFrame : launch UI
+    class WellnessProfile {
+        -String userId
+        -String fullName
+        -int age
+        -double heightCm
+        -double weightKg
+        -String goal
+        +calculateBMI() double
+    }
 
-MainFrame --> WellnessManager : manage app state
-MainFrame --> GoalTracker : goals
-MainFrame --> HabitTracker : habits
-MainFrame --> WellnessBot : assistant
+    class UserAccount {
+        -String userId
+        -String email
+        -String passwordHash
+    }
+    
+    class AlertLevel {
+        <<enumeration>>
+        LOW_RISK
+        MODERATE_RISK
+        HIGH_RISK
+    }
 
-WellnessManager --> DataStore : load/save
-WellnessManager --> AnalyticsEngine : scoring
-WellnessManager --> WellnessProfile : profile
-WellnessManager --> AbstractRecord : records
+    %% Services (Core Logic)
+    class WellnessManager {
+        -WellnessProfile profile
+        -List~AbstractRecord~ records
+        +load() void
+        +saveAll() void
+        +getOverallScore() double
+        +getAlertLevel() AlertLevel
+    }
 
-AbstractRecord ..|> ScoreContributor
-HealthRecord --|> AbstractRecord
-ActivityRecord --|> AbstractRecord
+    class DataStore {
+        -Path dataDir
+        +saveProfile(WellnessProfile)
+        +loadProfile() WellnessProfile
+        +saveRecords(List)
+        +loadRecords() List
+    }
+
+    class WellnessAnalyzer {
+        +calculateOverallScore(List) double
+        +classifyRisk(double) AlertLevel
+        +buildRecommendation(WellnessProfile, List) String
+    }
+
+    class ScoringPipeline {
+        +computeFinalScore(List, WellnessProfile) double
+    }
+
+    %% Relationships (OOP Principles)
+    AbstractRecord ..|> ScoreContributor : Realization (Implements)
+    ActivityRecord --|> AbstractRecord : Inheritance (Extends)
+    HealthRecord --|> AbstractRecord : Inheritance (Extends)
+    
+    %% Aggregation & Composition
+    WellnessManager o-- AbstractRecord : Aggregation (Has-A)
+    WellnessManager *-- WellnessProfile : Composition (Owns)
+    WellnessManager *-- DataStore : Composition
+    WellnessManager *-- WellnessAnalyzer : Composition
+    
+    %% Dependencies
+    WellnessAnalyzer ..> AlertLevel : Dependency
+    ScoringPipeline ..> AnalyticsEngine : Uses
 ```
 
 ---
