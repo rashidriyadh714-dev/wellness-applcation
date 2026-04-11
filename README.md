@@ -657,9 +657,11 @@ Documentation included in docs/:
 ## 15. Team Contribution and Collaboration
 
 Suggested section for final submission (edit with actual details):
-- Member 1: Core architecture, service implementation, data layer.
+- Member 1: Core architecture, service implementation.
 - Member 2: UI/UX implementation, dashboard, goals/habits interactions.
-- Member 3: Testing, documentation, presentation preparation.
+- Member 3: Testing, documentation.
+- Member 4: goals/habits interactions.
+- Member 4: presentation preparation, data layer.
 
 Collaboration approach:
 - Shared planning and task division.
@@ -689,15 +691,3 @@ Potential next steps:
 - Add secure cloud sync and multi-device account state.
 - Expand recommendation intelligence with more robust AI/ML models.
 - Improve role-based access and audit reporting for enterprise mode.
-
----
-
-## 18. Final Submission Checklist
-
-Before submission on CityU LMS, ensure:
-- Team details are fully filled (name, ID, class code, program, NRIC/passport).
-- GitHub repository URL is inserted.
-- PDF export generated from this report.
-- Source code is complete and runnable.
-- Live demo prepared (10 to 15 minutes).
-- All members are ready to present.
